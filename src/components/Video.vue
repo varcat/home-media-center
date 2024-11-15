@@ -32,6 +32,7 @@
       preload="metadata"
       @play="handlePlay"
       @loadedmetadata="onLoadedMetadata"
+      @timeupdate="onTimeUpdate"
     >
       <source src="./oceans.mp4" />
     </video>
@@ -52,17 +53,14 @@ const rateList = [1, 1.25, 1.5, 2, 3];
 const showRateMenu = ref(false);
 const curRate = ref(1);
 const play = ref(false);
+
+useVideo(videoElRef);
+
 const videoDuration = ref("0");
 const videoCurrentTime = ref("0");
 
 function handlePlay() {
   // unref(videoBox).requestFullscreen();
-}
-
-function onLoadedMetadata() {
-  // unref(videoElRef).currentTime = 10;
-  const { h, m, s } = getTimeInfo(unref(videoElRef).duration);
-  videoDuration.value = `${h}:${m}:${s}`;
 }
 
 function handleClickBg() {
@@ -126,7 +124,7 @@ function togglePlay() {
   backdrop-filter: blur(1px);
 }
 .rateButton {
-  width: 20px;
+  width: 40px;
   height: 16px;
 }
 .rateMenu {
