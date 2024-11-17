@@ -1,9 +1,7 @@
-<script setup>
-import Video from "./components/Video.vue";
-</script>
+<script setup></script>
 
 <template>
-  <Video />
+  <router-view></router-view>
 </template>
 
 <style scoped></style>
