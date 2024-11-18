@@ -5,38 +5,27 @@ import { onBeforeUnmount, onMounted, ref, unref } from "vue";
 const route = useRoute();
 const vid = route.params.vid;
 const src = ref("");
-const curIdx = ref(0);
+const curId = ref();
 const uid = ref(0);
 const duration = ref(0);
 const curRate = ref(1);
 const videoElRef = ref();
-const rateList = [0.5, 1, 1.25, 1.5, 2, 3];
 const recordInfo = ref(
-  JSON.parse(localStorage.getItem(`recordInfo_${vid}`) ?? "{}"),
+  JSON.parse(localStorage.getItem(`recordInfo_${vid}`)) || {},
 );
 
-function fmtNum(idx) {
-  return (idx + 1).toString().padStart(2, "0");
-}
+const rateList = [0.1, 1, 1.5, 2, 3];
 
 const list = ref([]);
 
-Array.from({ length: 33 }, (_, idx) => {
-  return {
-    id: idx,
-    title: `第${idx + 1}集`,
-    video: `/video/${vid}/${fmtNum(idx)}.mp4`,
-  };
-});
-
-function clickJi(x) {
+function clickEpisode(x) {
   uid.value += 1;
-  curIdx.value = x.id;
-  src.value = x.video;
+  curId.value = x.id;
+  src.value = x.link;
 }
 
 function onPlay() {
-  recordInfo.value.index = unref(curIdx);
+  recordInfo.value.index = unref(curId);
 }
 
 function onTimeupdate(event) {
@@ -56,10 +45,11 @@ function onLoadedMetadata(evt) {
 }
 
 onMounted(() => {
-  fetch(`/vInfo/${vid}.json`).then(async (resp) => {
+  fetch(`/v1/video/${vid}`).then(async (resp) => {
     list.value = await resp.json();
     const record = unref(recordInfo).index;
-    clickJi(unref(list)[record ? Number(record) : 0]);
+    const res = unref(list).find((x) => x.id === record);
+    clickEpisode(res || unref(list)[0]);
   });
 });
 
@@ -94,12 +84,12 @@ onBeforeUnmount(() => {
     </div>
     <div class="listContainer">
       <div
-        v-for="(x, i) of list"
+        v-for="x of list"
         class="btn"
-        :class="[{ active: curIdx === i }]"
-        @click="clickJi(x)"
+        :class="[{ active: curId === x.id }]"
+        @click="clickEpisode(x)"
       >
-        {{ x.title }}
+        {{ x.name }}
       </div>
     </div>
   </div>

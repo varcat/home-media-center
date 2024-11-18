@@ -1,30 +1,23 @@
 <script setup>
-import poster小巷人家 from "./p2907416715.webp";
-import poster玫瑰的故事 from "./img.png";
 import { useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
 
 const router = useRouter();
 
-const menus = [
-  {
-    title: "小巷人家",
-    poster: poster小巷人家,
-    releaseDate: "2024",
-    id: "01",
-  },
-  {
-    title: "玫瑰的故事",
-    poster: poster玫瑰的故事,
-    releaseDate: "2024",
-    id: "02",
-  },
-];
+const menus = ref([]);
 
 function toDetail(x) {
   router.push({
-    path: `/v/${x.id}`,
+    path: `/v/${x.vid}`,
   });
 }
+
+onMounted(() => {
+  fetch("/v1/videos").then(async (resp) => {
+    const json = await resp.json();
+    menus.value = json;
+  });
+});
 </script>
 
 <template>
@@ -32,7 +25,7 @@ function toDetail(x) {
     <div class="container">
       <div v-for="(x, i) of menus" @click="toDetail(x)">
         <div class="posterBox">
-          <img :src="x.poster" :alt="x.title" class="poster" />
+          <img :src="x.coverImg" :alt="x.title" class="poster" />
           <div class="title">{{ x.title }}({{ x.releaseDate }})</div>
         </div>
       </div>
