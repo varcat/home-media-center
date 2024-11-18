@@ -28,6 +28,22 @@ function onPlay() {
   recordInfo.value.index = unref(curId);
 }
 
+function onPause() {
+  saveData();
+}
+
+function onEnded() {
+  const idx = unref(list).findIndex(x => x.id === unref(curId));
+  if (idx > -1 && idx < unref(list).length - 2) {
+    clickEpisode(unref(list)[idx + 1]);
+  }
+}
+
+function onCanplay() {
+  unref(videoElRef).play();
+}
+
+
 function onTimeupdate(event) {
   const currentTime = event.target.currentTime;
   recordInfo.value.recordTime = currentTime;
@@ -41,12 +57,16 @@ function changeRate(rate) {
 function onLoadedMetadata(evt) {
   duration.value = evt.target.duration;
   evt.target.currentTime = unref(recordInfo).recordTime || 0;
-  evt.target.playbackRate = 1.5;
+}
+
+function saveData() {
+  localStorage.setItem(`recordInfo_${vid}`, JSON.stringify(unref(recordInfo)));
 }
 
 onMounted(() => {
+  window.addEventListener('beforeunload', saveData);
   fetch(`/v1/video/${vid}`).then(async (resp) => {
-    list.value = await resp.json();
+    list.value = (await resp.json()).sort((a, b) => Number(a.id) - Number(b.id));
     const record = unref(recordInfo).index;
     const res = unref(list).find((x) => x.id === record);
     clickEpisode(res || unref(list)[0]);
@@ -54,7 +74,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  localStorage.setItem(`recordInfo_${vid}`, JSON.stringify(unref(recordInfo)));
+  window.removeEventListener('beforeunload', saveData);
 });
 </script>
 
@@ -71,6 +91,9 @@ onBeforeUnmount(() => {
           @play="onPlay"
           @timeupdate="onTimeupdate"
           @loadedmetadata="onLoadedMetadata"
+          @pause="onPause"
+          @ended="onEnded"
+          @canplay="onCanplay"
         >
           <source :src="src" />
         </video>

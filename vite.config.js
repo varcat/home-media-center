@@ -5,6 +5,9 @@ import { presetUno } from "unocss";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "/Users/wangshunping/products/tv",
+  },
   server: {
     host: "0.0.0.0",
   },

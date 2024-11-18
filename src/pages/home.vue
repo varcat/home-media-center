@@ -61,7 +61,7 @@ onMounted(() => {
   background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0.4),
-    rgba(255, 255, 255, 0.4)
+    rgba(200, 200, 255, 0.4)
   );
   backdrop-filter: blur(4px);
 }
