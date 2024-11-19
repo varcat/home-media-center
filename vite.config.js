@@ -10,6 +10,16 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",
+    proxy: {
+      '/v1/': {
+        target: 'https://tv.iwei.xyz',
+        changeOrigin: true,
+      },
+      '/videos/': {
+        target: 'https://tv.iwei.xyz',
+        changeOrigin: true,
+      },
+    }
   },
   plugins: [
     UnoCSS({

@@ -25,7 +25,7 @@ function clickEpisode(x) {
 }
 
 function onPlay() {
-  recordInfo.value.index = unref(curId);
+  recordInfo.value.id = unref(curId);
 }
 
 function onPause() {
@@ -46,7 +46,7 @@ function onCanplay() {
 
 function onTimeupdate(event) {
   const currentTime = event.target.currentTime;
-  recordInfo.value.recordTime = currentTime;
+  recordInfo.value.time = currentTime;
 }
 
 function changeRate(rate) {
@@ -56,7 +56,9 @@ function changeRate(rate) {
 
 function onLoadedMetadata(evt) {
   duration.value = evt.target.duration;
-  evt.target.currentTime = unref(recordInfo).recordTime || 0;
+  if (unref(recordInfo).id === unref(curId)) {
+    evt.target.currentTime = unref(recordInfo).time || 0;
+  }
 }
 
 function saveData() {
@@ -67,8 +69,7 @@ onMounted(() => {
   window.addEventListener('beforeunload', saveData);
   fetch(`/v1/video/${vid}`).then(async (resp) => {
     list.value = (await resp.json()).sort((a, b) => Number(a.id) - Number(b.id));
-    const record = unref(recordInfo).index;
-    const res = unref(list).find((x) => x.id === record);
+    const res = unref(list).find((x) => x.id === unref(recordInfo).id);
     clickEpisode(res || unref(list)[0]);
   });
 });
