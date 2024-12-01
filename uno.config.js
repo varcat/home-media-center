@@ -3,24 +3,29 @@ import { defineConfig } from "unocss";
 export default defineConfig({
   presets: [],
   rules: [
-    [/^m-(\d+)$/, ([_, num]) => ({ margin: `${num}px` })],
-    [/^p-(\d+)$/, ([_, num]) => ({ padding: `${num}px` })],
     [
-      /^([pm])([tblr])-(\d+)$/,
-      ([_, type, direction, num]) => {
-        const t = { p: "padding", m: "margin" }[type];
-        const d = { t: "top", b: "bottom", l: "left", r: "right" }[direction];
+      /^([pm])([xytblr])?-(\d+)$/,
+      ([, t, d, n]) => {
+        const type = { p: "padding", m: "margin" }[t];
+        if (d) {
+          const direction = {
+            x: "left,right",
+            y: "top,bottom",
+            t: "top",
+            b: "bottom",
+            l: "left",
+            r: "right",
+          }[d];
+          return direction.split(",").map((i) => {
+            return {
+              [`${type}-${i}`]: `${n}px`,
+            };
+          });
+        }
         return {
-          [`${t}-${d}`]: `${num}px`,
+          [`${type}`]: `${n}px`,
         };
       },
-    ],
-    [
-      /^px-(\d+)$/,
-      ([_, num]) => ({
-        "padding-left": `${num}px`,
-        "padding-right": `${num}px`,
-      }),
     ],
   ],
 });
