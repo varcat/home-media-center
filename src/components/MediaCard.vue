@@ -18,7 +18,7 @@ const props = defineProps({
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 .card {
   height: 100%;
   cursor: pointer;
