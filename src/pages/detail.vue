@@ -11,7 +11,7 @@ const duration = ref(0);
 const curRate = ref(1);
 const videoElRef = ref();
 const recordInfo = ref(
-  JSON.parse(localStorage.getItem(`recordInfo_${vid}`)) || {},
+  JSON.parse(localStorage.getItem(`recordInfo_${vid}`)) || {}
 );
 
 const rateList = [0.1, 1, 1.5, 2, 3];
@@ -33,7 +33,7 @@ function onPause() {
 }
 
 function onEnded() {
-  const idx = unref(list).findIndex(x => x.id === unref(curId));
+  const idx = unref(list).findIndex((x) => x.id === unref(curId));
   if (idx > -1 && idx < unref(list).length - 2) {
     clickEpisode(unref(list)[idx + 1]);
   }
@@ -42,7 +42,6 @@ function onEnded() {
 function onCanplay() {
   unref(videoElRef).play();
 }
-
 
 function onTimeupdate(event) {
   const currentTime = event.target.currentTime;
@@ -65,17 +64,51 @@ function saveData() {
   localStorage.setItem(`recordInfo_${vid}`, JSON.stringify(unref(recordInfo)));
 }
 
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+}
+
+const controller = new AbortController();
 onMounted(() => {
-  window.addEventListener('beforeunload', saveData);
+  window.addEventListener("beforeunload", saveData, {
+    signal: controller.signal,
+  });
+  screen.orientation.addEventListener(
+    "change",
+    function () {
+      const type = screen.orientation.type;
+      if (type.includes("landscape")) {
+        unref(videoElRef)
+          .requestFullscreen()
+          .catch((error) => {
+            console.error("无法全屏:", error);
+          });
+      } else if (type.includes('portrait')) {
+        exitFullscreen();
+      }
+    },
+    {
+      signal: controller.signal,
+    }
+  );
+
   fetch(`/v1/video/${vid}`).then(async (resp) => {
-    list.value = (await resp.json()).sort((a, b) => Number(a.id) - Number(b.id));
+    list.value = (await resp.json()).sort(new Intl.Collator().compare);
     const res = unref(list).find((x) => x.id === unref(recordInfo).id);
     clickEpisode(res || unref(list)[0]);
   });
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('beforeunload', saveData);
+  controller.abort();
 });
 </script>
 
@@ -95,6 +128,7 @@ onBeforeUnmount(() => {
           @pause="onPause"
           @ended="onEnded"
           @canplay="onCanplay"
+          controlslist="nodownload"
         >
           <source :src="src" />
         </video>
