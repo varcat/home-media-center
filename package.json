@@ -12,6 +12,7 @@
     "dayjs": "^1.11.13",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
+    "vuetify": "^3.7.5",
     "wsp-toolkit": "^0.6.0"
   },
   "devDependencies": {
