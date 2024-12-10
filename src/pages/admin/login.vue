@@ -3,6 +3,7 @@ import { ref, unref } from "vue";
 import { req } from "../../utils/http.js";
 import { toPromiseTuple } from "wsp-toolkit";
 import { useRouter } from "vue-router";
+import { message } from "ant-design-vue";
 
 const router = useRouter();
 
@@ -11,7 +12,6 @@ const formData = ref({
   pwd: "",
 });
 const loading = ref(false);
-const snackbar = ref(false);
 
 async function handleLogin() {
   if (unref(loading)) return;
@@ -23,7 +23,10 @@ async function handleLogin() {
   );
   loading.value = false;
   if (!res.ok) return;
-  snackbar.value = true;
+  message.open({
+    type: "success",
+    content: "Login Success",
+  });
   router.push("/admin/home");
 }
 </script>
@@ -31,22 +34,19 @@ async function handleLogin() {
 <template>
   <div class="page">
     <div class="card">
-      <v-text-field
-        label="User"
-        v-model="formData.user"
-        tabindex="0"
-      ></v-text-field>
-      <v-text-field
-        label="Password"
+      <a-input
+        placeholder="User"
+        v-model:value="formData.user"
+        class="mb-12"
+      ></a-input>
+      <a-input
+        placeholder="Password"
         type="password"
-        v-model="formData.pwd"
-        tabindex="0"
+        v-model:value="formData.pwd"
         @keydown.enter="handleLogin"
-      ></v-text-field>
+      ></a-input>
     </div>
   </div>
-
-  <v-snackbar v-model="snackbar" :timeout="2000">登录成功 </v-snackbar>
 </template>
 
 <style scoped lang="less">

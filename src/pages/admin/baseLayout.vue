@@ -1,9 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="page">
-    <router-view></router-view>
-  </div>
+  <div class="page"></div>
 </template>
 
 <style scoped lang="less">

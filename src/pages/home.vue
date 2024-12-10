@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import MediaCard from "../components/MediaCard.vue";
+import { req } from "../utils/http.js";
 
 const router = useRouter();
 
@@ -14,9 +15,8 @@ function toDetail(x) {
 }
 
 onMounted(() => {
-  fetch("/v1/videos").then(async (resp) => {
-    const json = await resp.json();
-    menus.value = json;
+  req("/v1/videos").then((res) => {
+    menus.value = res;
   });
 });
 </script>

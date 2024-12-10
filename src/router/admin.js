@@ -4,7 +4,7 @@ export default [
   { path: "/admin/login", component: () => import("../pages/admin/login.vue") },
   {
     path: "/admin",
-    redirect: "login",
+    redirect: "/admin/login",
     component: BaseLayout,
     children: [
       {

@@ -2,11 +2,12 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import UnoCSS from "unocss/vite";
 import { presetUno } from "unocss";
+import { config } from "dotenv";
+
+const env = config({ path: ".env" });
 
 const getTarget = () => {
-  return (
-    "http://127.0.0.1:4523/m1/2681866-2570449-default" || "https://tv.iwei.xyz"
-  );
+  return env.parsed.HOST || "https://tv.iwei.xyz";
 };
 
 // https://vite.dev/config/
