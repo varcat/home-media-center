@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import UnoCSS from "unocss/vite";
 import { presetUno } from "unocss";
 import { config } from "dotenv";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 
 const env = config({ path: ".env" });
 
@@ -29,6 +30,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    vueJsx({}),
     UnoCSS({
       presets: [presetUno()],
     }),

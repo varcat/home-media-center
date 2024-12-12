@@ -15,6 +15,17 @@
   height: 100%;
   width: 100%;
 }
+
+:root {
+  --color-danger: #ff4d4f;
+  --color-warn: rgb(242,139,42);
+  --color-info: rgb(46,165,211);
+  --color-light: rgb(65,191,190);
+  --color-success: rgb(36,198,55);
+  --color-success-text: rgb(113,205,40);
+  --color-purple: rgb(154,97,188);
+}
+
 body {
   height: 100%;
   width: 100%;

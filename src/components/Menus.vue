@@ -3,6 +3,7 @@ import {
   VideoCameraOutlined,
   HomeOutlined,
   UserOutlined,
+  TagsOutlined,
 } from "@ant-design/icons-vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -19,6 +20,11 @@ const menuList = [
     title: "Video Manage",
     icon: VideoCameraOutlined,
     path: "/admin/video/manage",
+  },
+  {
+    title: "Tags",
+    icon: TagsOutlined,
+    path: "/admin/tags",
   },
   {
     title: "User Manage",

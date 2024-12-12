@@ -28,6 +28,13 @@ export default [
           title: "User Manage",
         },
       },
+      {
+        path: "tags",
+        component: () => import("../pages/admin/video/tags.vue"),
+        meta: {
+          title: "Tags",
+        },
+      },
     ],
   },
 ];
