@@ -4,6 +4,7 @@ import UnoCSS from "unocss/vite";
 import { presetUno } from "unocss";
 import { config } from "dotenv";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import path from "node:path";
 
 const env = config({ path: ".env" });
 
@@ -36,4 +37,9 @@ export default defineConfig({
     }),
     vue(),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
 });

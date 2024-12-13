@@ -6,7 +6,7 @@
     :dropdownMatchSelectWidth="true"
     :theme="{
       token: {
-        colorPrimary: '#666',
+        colorPrimary: 'rgb(154,97,188)',
       },
     }"
     :input="{
