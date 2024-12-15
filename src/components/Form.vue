@@ -1,5 +1,5 @@
 <script setup>
-import { ref, unref } from "vue";
+import { computed, ref, unref } from "vue";
 
 const props = defineProps({
   fields: Array,
@@ -16,6 +16,24 @@ const emits = defineEmits(["update:data"]);
 
 const refForm = ref();
 
+const rules = computed(() => {
+  return props.fields.reduce((acc, field) => {
+    if (!Array.isArray(acc[field.prop])) {
+      acc[field.prop] = [];
+    }
+    if (Array.isArray(field.rules)) {
+      acc[field.prop].push(...field.rules);
+    }
+    if (field.required) {
+      acc[field.prop].push({
+        required: true,
+        message: `Please input ${field.label}`,
+      });
+    }
+    return acc;
+  }, {});
+});
+
 function onUpdateValue(field, evt) {
   emits("update:data", {
     ...unref(props.data),
@@ -28,8 +46,12 @@ function resetFields() {
 }
 
 async function validate(nameList) {
-  const data = await unref(refForm).validate(nameList);
-  console.log(data);
+  try {
+    const data = await unref(refForm).validate(nameList);
+    return [null, data];
+  } catch (e) {
+    return [e, null];
+  }
 }
 
 defineExpose({
@@ -39,7 +61,12 @@ defineExpose({
 </script>
 
 <template>
-  <a-form :model="data" :label-col="labelCol" :ref="(r) => (refForm = r)">
+  <a-form
+    :model="data"
+    :label-col="labelCol"
+    :ref="(r) => (refForm = r)"
+    :rules="rules"
+  >
     <a-form-item
       v-for="field of fields"
       :key="field.prop"
