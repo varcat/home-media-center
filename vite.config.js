@@ -25,7 +25,7 @@ export default defineConfig({
         changeOrigin: true,
       },
       "/videos/": {
-        target: "https://tv.iwei.xyz",
+        target: "http://localhost/",
         changeOrigin: true,
       },
     },

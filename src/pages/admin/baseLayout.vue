@@ -51,6 +51,7 @@ const title = computed(() => route.meta.title);
   box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.05);
   padding: 16px;
   overflow: auto;
+  position: relative;
 }
 .btnWrapper {
   text-align: center;

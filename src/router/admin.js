@@ -22,6 +22,10 @@ export default [
         },
       },
       {
+        path: "video/edit",
+        component: () => import("../pages/admin/video/edit.vue"),
+      },
+      {
         path: "user/manage",
         component: () => import("../pages/admin/user/manage.vue"),
         meta: {

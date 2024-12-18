@@ -28,6 +28,7 @@ const rules = computed(() => {
       acc[field.prop].push({
         required: true,
         message: `Please input ${field.label}`,
+        trigger: "blur",
       });
     }
     return acc;
