@@ -1,5 +1,5 @@
 export const InputType = {
-  select: "select",
+  text: "text",
 };
 
 export const LIST_PAGE_SIZE = 10;

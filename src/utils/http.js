@@ -4,7 +4,7 @@ import { message } from "ant-design-vue";
 export async function req(url, { data, params, method = "GET" } = {}) {
   if (params) {
     const s = new URLSearchParams();
-    url =
+    url +=
       "?" +
       Object.entries(params)
         .reduce((searchParams, [name, value]) => {
@@ -26,10 +26,7 @@ export async function req(url, { data, params, method = "GET" } = {}) {
     headers,
     body: data ? JSON.stringify(data) : undefined,
   });
-  if (
-    resp.status === 200 &&
-    resp.headers.get("Content-Type").startsWith("application/json")
-  ) {
+  if (resp.headers.get("Content-Type").startsWith("application/json")) {
     const res = await resp.json();
     if (!res.ok) {
       message.error(res.msg);

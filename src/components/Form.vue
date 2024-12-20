@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, unref } from "vue";
+import Input from "@/components/Input.vue";
 
 const props = defineProps({
   fields: Array,
@@ -74,22 +75,16 @@ defineExpose({
       :label="field.label"
       :name="field.prop"
     >
-      <a-tree-select
-        v-if="field.treeData"
+      <Input
+        :type="field.type"
         :value="data[field.prop]"
         @update:value="onUpdateValue(field, $event)"
-        show-search
-        allow-clear
+        v-bind="field.iptProps"
         :tree-data="field.treeData"
-        tree-node-filter-prop="label"
+        :options="field.options"
+        :disabled="field.disabled"
       >
-      </a-tree-select>
-      <a-input
-        v-else
-        :value="data[field.prop]"
-        @update:value="onUpdateValue(field, $event)"
-        allowClear
-      ></a-input>
+      </Input>
     </a-form-item>
   </a-form>
 </template>

@@ -28,9 +28,12 @@ async function onDelete(row) {
   loadList();
 }
 
-function toEditPage() {
+function toEditPage(row) {
   router.push({
     path: "/admin/video/edit",
+    query: row && {
+      id: row.id,
+    },
   });
 }
 
@@ -54,7 +57,7 @@ onMounted(() => {
       <a-list-item>
         <a-list-item-meta>
           <template #avatar>
-            <a-image :height="80" :src="item.coverImg"></a-image>
+            <a-image :height="90" :width="60" :src="item.coverImg"></a-image>
           </template>
           <template #title>
             <div style="font-weight: bold">

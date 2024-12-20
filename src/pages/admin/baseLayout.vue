@@ -19,7 +19,7 @@ const title = computed(() => route.meta.title);
       </div>
     </div>
     <div class="main">
-      <h1>{{ title }}</h1>
+      <h1 v-if="title">{{ title }}</h1>
       <router-view></router-view>
     </div>
   </div>
