@@ -2,7 +2,7 @@
 const props = defineProps({
   coverImg: String,
   title: String,
-  releaseDate: String,
+  releaseDate: [String, Number],
 });
 </script>
 

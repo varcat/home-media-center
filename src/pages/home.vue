@@ -10,13 +10,14 @@ const menus = ref([]);
 
 function toDetail(x) {
   router.push({
-    path: `/v/${x.vid}`,
+    path: `/v/${x.id}`,
   });
 }
 
 onMounted(() => {
-  req("/v1/videos").then((res) => {
-    menus.value = res;
+  req("/v1/video/list", { data: {} }).then((res) => {
+    if (!res.ok) return;
+    menus.value = res.data.rows;
   });
 });
 </script>
@@ -39,21 +40,25 @@ onMounted(() => {
 .menus {
   padding: 12px;
 }
+
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
   grid-gap: 8px;
 }
+
 @media screen and (max-width: 768px) {
   .container {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
 @media screen and (max-width: 425px) {
   .container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
 @media screen and (max-width: 375px) {
   .container {
     grid-template-columns: repeat(3, 1fr);

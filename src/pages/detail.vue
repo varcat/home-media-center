@@ -11,7 +11,7 @@ const duration = ref(0);
 const curRate = ref(1);
 const videoElRef = ref();
 const recordInfo = ref(
-  JSON.parse(localStorage.getItem(`recordInfo_${vid}`)) || {}
+  JSON.parse(localStorage.getItem(`recordInfo_${vid}`)) || {},
 );
 
 const rateList = [0.1, 1, 1.5, 2, 3];
@@ -66,14 +66,14 @@ function saveData() {
 
 function exitFullscreen() {
   if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
 }
 
 const controller = new AbortController();
@@ -91,17 +91,19 @@ onMounted(() => {
           .catch((error) => {
             console.error("无法全屏:", error);
           });
-      } else if (type.includes('portrait')) {
+      } else if (type.includes("portrait")) {
         exitFullscreen();
       }
     },
     {
       signal: controller.signal,
-    }
+    },
   );
 
   fetch(`/v1/video/${vid}`).then(async (resp) => {
-    list.value = (await resp.json()).sort(new Intl.Collator().compare);
+    if (!resp.ok) return;
+    const episodeList = resp.data.rows;
+    list.value = episodeList.sort(new Intl.Collator().compare);
     const res = unref(list).find((x) => x.id === unref(recordInfo).id);
     clickEpisode(res || unref(list)[0]);
   });
