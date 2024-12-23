@@ -1,9 +1,9 @@
 <script setup>
-import Table from "@/components/Table.vue";
 import { deleteVideo, getVideoList } from "@/service/video.js";
 import { onMounted, ref } from "vue";
 import Pagination from "@/components/Pagination.vue";
 import { useRouter } from "vue-router";
+import { req } from "@/utils/http.js";
 
 const total = ref(0);
 const page = ref(1);
@@ -24,6 +24,7 @@ async function loadList() {
 async function onDelete(row) {
   await deleteVideo({
     id: row.id,
+    path: row.path,
   });
   loadList();
 }
@@ -33,6 +34,14 @@ function toEditPage(row) {
     path: "/admin/video/edit",
     query: row && {
       id: row.id,
+    },
+  });
+}
+
+function openDir(x) {
+  req("/v1/video/openDir", {
+    data: {
+      path: x.path,
     },
   });
 }
@@ -75,6 +84,7 @@ onMounted(() => {
         </a-list-item-meta>
         <template #actions>
           <a-button type="link" @click="toEditPage(item)">Edit</a-button>
+          <a-button type="text" @click="openDir(item)">Open Dir</a-button>
           <a-popconfirm
             title="Are you sure delete this video?"
             @confirm="onDelete(item)"

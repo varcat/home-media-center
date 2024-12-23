@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { onBeforeUnmount, onMounted, ref, unref } from "vue";
+import { req } from "@/utils/http.js";
 
 const route = useRoute();
 const vid = route.params.vid;
@@ -100,9 +101,9 @@ onMounted(() => {
     },
   );
 
-  fetch(`/v1/video/${vid}`).then(async (resp) => {
+  req(`/v1/video/${vid}`).then(async (resp) => {
     if (!resp.ok) return;
-    const episodeList = resp.data.rows;
+    const episodeList = resp.data.episodeList;
     list.value = episodeList.sort(new Intl.Collator().compare);
     const res = unref(list).find((x) => x.id === unref(recordInfo).id);
     clickEpisode(res || unref(list)[0]);
@@ -172,6 +173,8 @@ onBeforeUnmount(() => {
   white-space: nowrap;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 3px;
+  color: #fafafa;
+
   &.active {
     color: orange;
   }
