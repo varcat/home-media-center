@@ -174,6 +174,7 @@ onBeforeUnmount(() => {
   background: rgba(255, 255, 255, 0.4);
   border-radius: 3px;
   color: #fafafa;
+  overflow: hidden;
 
   &.active {
     color: orange;
