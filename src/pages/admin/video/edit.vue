@@ -72,6 +72,9 @@ async function onSave() {
     return;
   }
   const api = isExist(unref(editVideoId)) ? apiUpdateVideo : apiAddVideo;
+  if (unref(editVideoId)) {
+    data.id = unref(editVideoId);
+  }
   saveLoading.value = true;
   const { ok } = await api(data);
   saveLoading.value = false;
