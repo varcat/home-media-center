@@ -52,11 +52,13 @@ const props = defineProps({
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #ccc;
 }
 .date {
   position: absolute;
   left: 2px;
   top: 2px;
+  color: #fafafa;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
 }
 </style>

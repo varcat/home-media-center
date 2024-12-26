@@ -166,15 +166,15 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 .btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  display: inline-block;
   padding: 4px 0;
   white-space: nowrap;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 3px;
   color: #fafafa;
   overflow: hidden;
+  text-overflow: ellipsis;
 
   &.active {
     color: orange;

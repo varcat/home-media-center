@@ -1,8 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
-import MediaCard from "../components/MediaCard.vue";
-import { req } from "../utils/http.js";
+import MediaCard from "../../components/MediaCard.vue";
+import { req } from "../../utils/http.js";
 
 const router = useRouter();
 
