@@ -12,3 +12,8 @@ export function getTimeInfo(number) {
     s: Math.round(n),
   };
 }
+
+export function fmtTileMinSec(duration) {
+  const i = getTimeInfo(duration);
+  return `${i.m}:${i.s}`;
+}

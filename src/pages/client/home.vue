@@ -43,6 +43,7 @@ onMounted(() => {
 
 .container {
   display: grid;
+  justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
   grid-gap: 8px;
 }
